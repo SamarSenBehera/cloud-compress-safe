@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, GitHub } from "lucide-react";
+import { Menu, X, Github } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import Logo from "./Logo";
 
