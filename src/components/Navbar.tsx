@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Github } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import Logo from "./Logo";
 
@@ -61,15 +60,6 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
               </Link>
             </>
           )}
-          <a
-            href="https://github.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-4 p-2 rounded-lg hover:bg-primary/10 transition"
-            aria-label="GitHub"
-          >
-            <Github className="text-white" size={25} />
-          </a>
         </div>
         <div className="md:hidden">
           <button
@@ -131,15 +121,6 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
                 </Link>
               </>
             )}
-            <a
-              href="https://github.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mr-auto px-2 rounded-lg hover:bg-primary/10 transition"
-              aria-label="GitHub"
-            >
-              <Github className="text-white" size={25} />
-            </a>
           </div>
         </div>
       )}
@@ -148,4 +129,3 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
 };
 
 export default Navbar;
-
