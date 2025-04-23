@@ -1,78 +1,112 @@
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Session, User } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 
-// Define the context type
-interface AuthContextType {
+type AuthContextType = {
+  user: User | null;
+  session: Session | null;
   isLoggedIn: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
-}
-
-// Create the context
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Custom hook to use the auth context
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  loading: boolean;
 };
 
-// Props interface for AuthProvider
-interface AuthProviderProps {
-  children: ReactNode;
-}
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  session: null,
+  isLoggedIn: false,
+  signIn: async () => {},
+  signUp: async () => {},
+  signOut: async () => {},
+  loading: true
+});
 
-// Auth provider component
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export const useAuth = () => useContext(AuthContext);
 
-  // Check localStorage on mount
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const storedLoginStatus = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(storedLoginStatus);
+    // Set up auth state listener first
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        console.log("Auth state changed:", event);
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
+    );
+
+    // Then check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log("Initial session check:", session ? "Session exists" : "No session");
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  // Login function
-  const login = async (email: string, password: string) => {
-    // In a real app, this would call your authentication API
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        // Mock successful login
-        localStorage.setItem("isLoggedIn", "true");
-        setIsLoggedIn(true);
-        resolve();
-      }, 1000);
-    });
+  const signIn = async (email: string, password: string) => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing in:', error);
+      throw error;
+    }
   };
 
-  // Register function
-  const register = async (name: string, email: string, password: string) => {
-    // In a real app, this would call your registration API
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        // Mock successful registration
-        localStorage.setItem("isLoggedIn", "true");
-        setIsLoggedIn(true);
-        resolve();
-      }, 1000);
-    });
+  const signUp = async (email: string, password: string) => {
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing up:', error);
+      throw error;
+    }
   };
 
-  // Logout function
-  const logout = () => {
-    localStorage.removeItem("isLoggedIn");
-    setIsLoggedIn(false);
+  const signOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing out:', error);
+      throw error;
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, register, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        isLoggedIn: !!user,
+        signIn,
+        signUp,
+        signOut,
+        loading
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export default AuthContext;
+export default AuthProvider;

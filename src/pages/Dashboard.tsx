@@ -1,6 +1,7 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FileUpload from "@/components/FileUpload";
@@ -17,29 +18,23 @@ import {
 
 // Hooks for user files
 import { useUserFiles, useAddUserFile, uploadFileToSupabase, useDeleteUserFile, downloadFile } from "@/hooks/useUserFiles";
-import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Dashboard = () => {
-  const { isLoggedIn } = useAuth();
+  const { user, isLoggedIn } = useAuth();
+  const { toast } = useToast();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isCompressing, setIsCompressing] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  // For real user - fetch user id from supabase client
-  const user = window.localStorage.getItem("sb-user"); // fallback method if `useAuth` doesn't expose user
-  // You may want to update this to use proper user object if available (show avatar, name, etc)
-  const userId = (window.localStorage.getItem("supabase.auth.token")
-    ? JSON.parse(window.localStorage.getItem("supabase.auth.token") || "{}")?.currentSession?.user?.id
-    : null
-  ) || null;
-
+  // Get user ID from Auth context
+  const userId = user?.id || null;
   const navigate = useNavigate();
 
   // React Query hooks
   const fileQuery = useUserFiles(userId);
   const addUserFile = useAddUserFile();
   const deleteUserFile = useDeleteUserFile();
-  const queryClient = useQueryClient();
 
   // Stats
   const files = fileQuery.data || [];
@@ -58,29 +53,35 @@ const Dashboard = () => {
 
   // Handle Compression/Upload
   const handleCompressFile = async () => {
-    if (!selectedFile || !userId) return;
+    if (!selectedFile || !userId) {
+      toast({
+        title: "Error",
+        description: "No file selected or you're not logged in",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsCompressing(true);
     setProgress(0);
 
     // Simulate compression and progress UI
-    let timer: NodeJS.Timeout;
-    let current = 0;
-    timer = setInterval(() => {
-      current += 10;
-      setProgress(current);
-      if (current >= 100) {
-        clearInterval(timer);
-      }
-    }, 250);
-
-    const { compressedSize } = await simulateCompression(selectedFile);
-    // Create a new File with the new (smaller) size for upload
-    // For demo, we cannot shrink the file, so just upload the original
-    let fileForUpload = selectedFile;
-    // Upload to storage
-    let storagePath: string = "";
     try {
-      storagePath = await uploadFileToSupabase(userId, fileForUpload);
+      let timer: NodeJS.Timeout;
+      let current = 0;
+      timer = setInterval(() => {
+        current += 10;
+        setProgress(current);
+        if (current >= 100) {
+          clearInterval(timer);
+        }
+      }, 250);
+
+      const { compressedSize } = await simulateCompression(selectedFile);
+      
+      // Upload to storage
+      const storagePath = await uploadFileToSupabase(userId, selectedFile);
+      
       // Insert metadata into user_files
       await addUserFile.mutateAsync({
         user_id: userId,
@@ -90,49 +91,89 @@ const Dashboard = () => {
         file_type: getFileType(selectedFile),
         storage_path: storagePath,
       });
+      
       setTimeout(() => {
         setProgress(100);
         setIsCompressing(false);
         setSelectedFile(null);
-        queryClient.invalidateQueries({ queryKey: ["user_files", userId] });
+        
+        // Refresh file list
+        fileQuery.refetch();
+        
+        toast({
+          title: "Success",
+          description: `File "${selectedFile.name}" compressed and uploaded successfully`,
+        });
       }, 400);
     } catch (e) {
       setIsCompressing(false);
-      alert("Error uploading file: " + String((e as any)?.message || e));
+      toast({
+        title: "Upload Error",
+        description: String((e as any)?.message || e),
+        variant: "destructive"
+      });
     }
   };
 
   // Download handler
   const handleDownloadFile = async (fileId: string) => {
-    const fileMeta = files.find(f => f.id === fileId);
-    if (fileMeta && fileMeta.storage_path) {
-      const blob = await downloadFile(fileMeta.storage_path);
-      if (blob) {
-        // Download as file
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = fileMeta.name;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
+    try {
+      const fileMeta = files.find(f => f.id === fileId);
+      if (fileMeta && fileMeta.storage_path) {
+        const blob = await downloadFile(fileMeta.storage_path);
+        if (blob) {
+          // Download as file
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = fileMeta.name;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          
+          toast({
+            title: "Downloaded",
+            description: `File "${fileMeta.name}" downloaded successfully`,
+          });
+        }
       }
+    } catch (error) {
+      toast({
+        title: "Download Error",
+        description: String((error as any)?.message || error),
+        variant: "destructive"
+      });
     }
   };
 
   // Delete handler
   const handleDeleteFile = async (fileId: string) => {
-    const fileMeta = files.find(f => f.id === fileId);
-    if (fileMeta) {
-      await deleteUserFile.mutateAsync({ id: fileMeta.id, storage_path: fileMeta.storage_path });
+    try {
+      const fileMeta = files.find(f => f.id === fileId);
+      if (fileMeta) {
+        await deleteUserFile.mutateAsync({ id: fileMeta.id, storage_path: fileMeta.storage_path });
+        toast({
+          title: "Deleted",
+          description: `File "${fileMeta.name}" deleted successfully`,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Delete Error",
+        description: String((error as any)?.message || error),
+        variant: "destructive"
+      });
     }
   };
 
-  // Only show dashboard if user is authenticated
-  if (!isLoggedIn) {
-    navigate("/login");
-    return null;
-  }
+  // Redirect if not logged in
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
+
+  if (!isLoggedIn) return null;
 
   return (
     <div className="flex flex-col min-h-screen">
