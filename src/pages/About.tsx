@@ -9,7 +9,7 @@ const About = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-blue-600 text-white py-16">
+      <section className="bg-violet-300 text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">About SecureZip</h1>
           <p className="text-xl max-w-2xl mx-auto opacity-90">
@@ -76,7 +76,7 @@ const About = () => {
             <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="w-40 h-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200 shadow-xl">
                 <img 
-                  src="https://avatars.githubusercontent.com/u/148786427?s=400&u=794e7f3fe9c184c5fbb45f64d548f7d55175a5ea&v=4" 
+                  src="https://avatars.githubusercontent.com/u/208837719?v=4" 
                   alt="Product Manager" 
                   className="w-full h-full object-cover"
                 />
