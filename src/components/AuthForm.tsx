@@ -39,13 +39,17 @@ const AuthForm = ({ type, onSubmit, isLoading = false }: AuthFormProps) => {
     let isValid = true;
     const newErrors = { ...errors };
     
-    // Validate email
+    // Validate email - using Supabase's recommended regex pattern
     if (!formValues.email) {
       newErrors.email = "Email is required";
       isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
-      newErrors.email = "Email is invalid";
-      isValid = false;
+    } else {
+      // Valid email regex pattern
+      const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+      if (!emailPattern.test(formValues.email)) {
+        newErrors.email = "Email is invalid";
+        isValid = false;
+      }
     }
     
     // Validate password

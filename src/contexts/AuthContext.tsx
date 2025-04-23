@@ -2,13 +2,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 type AuthContextType = {
   user: User | null;
   session: Session | null;
   isLoggedIn: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, metadata?: { name?: string }) => Promise<void>;
   signOut: () => Promise<void>;
   loading: boolean;
 };
@@ -61,21 +62,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        toast.error(`Login failed: ${error.message}`);
+        throw error;
+      }
+
+      toast.success("Logged in successfully");
     } catch (error) {
       console.error('Error signing in:', error);
       throw error;
     }
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, metadata?: { name?: string }) => {
     try {
       const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: metadata
+        }
       });
 
-      if (error) throw error;
+      if (error) {
+        toast.error(`Registration failed: ${error.message}`);
+        throw error;
+      }
+
+      toast.success("Account created successfully");
     } catch (error) {
       console.error('Error signing up:', error);
       throw error;
@@ -85,7 +99,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        toast.error(`Logout failed: ${error.message}`);
+        throw error;
+      }
+      toast.success("Logged out successfully");
     } catch (error) {
       console.error('Error signing out:', error);
       throw error;

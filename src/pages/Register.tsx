@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthForm from "@/components/AuthForm";
@@ -16,13 +17,13 @@ const Register = () => {
     setIsLoading(true);
     
     try {
-      // Call our register function from context
-      await signUp(values.email, values.password);
+      // Call our register function from context with name in metadata
+      await signUp(values.email, values.password, { name: values.name });
       console.log("Registered successfully");
       navigate("/dashboard");
     } catch (error) {
       console.error("Registration failed:", error);
-      // In a real app, we'd handle errors better
+      // Error is already handled in AuthContext with toast
     } finally {
       setIsLoading(false);
     }

@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthForm from "@/components/AuthForm";
@@ -22,7 +23,7 @@ const Login = () => {
       navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
-      // In a real app, we'd handle errors better
+      // Error is already handled in AuthContext with toast
     } finally {
       setIsLoading(false);
     }
