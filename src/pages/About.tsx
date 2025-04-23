@@ -24,7 +24,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-12 text-center">Our Team</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {/* Team Member 1 */}
             <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="w-40 h-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200 shadow-xl">
@@ -70,6 +70,22 @@ const About = () => {
               <p className="text-blue-600 mb-2">Lead Developer</p>
               <p className="text-gray-600">
                 Cloud infrastructure expert who architected our scalable platform.
+              </p>
+            </div>
+            
+            {/* Team Member 4 (New) */}
+            <div className="text-center hover:scale-105 transition-transform duration-300">
+              <div className="w-40 h-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200 shadow-xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80" 
+                  alt="Product Manager" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-bold">Emily Chen</h3>
+              <p className="text-blue-600 mb-2">Product Manager</p>
+              <p className="text-gray-600">
+                User experience specialist with a focus on creating intuitive interfaces.
               </p>
             </div>
           </div>
