@@ -29,12 +29,12 @@ const About = () => {
             <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="w-40 h-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200 shadow-xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80" 
+                  src="https://avatars.githubusercontent.com/u/131295002?v=4" 
                   alt="CEO" 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h3 className="text-xl font-bold">David Chen</h3>
+              <h3 className="text-xl font-bold">BIDYADHAR</h3>
               <p className="text-blue-600 mb-2">CEO & Founder</p>
               <p className="text-gray-600">
                 Compression algorithm expert with 15+ years in data storage technologies.
