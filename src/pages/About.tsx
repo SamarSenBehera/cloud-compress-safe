@@ -33,10 +33,10 @@ const About = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h3 className="text-xl font-bold">BIDYADHAR</h3>
-              <p className="text-blue-600 mb-2">CEO & Founder</p>
+              <h3 className="text-xl font-bold">BIDYADHAR SAHU</h3>
+              <p className="text-blue-600 mb-2">Cloud Solution Developer</p>
               <p className="text-gray-600">
-                Compression algorithm expert with 15+ years in data storage technologies.
+                Expert in algorithms and cloud infrastructure, with a strong background in designing scalable platforms and working with blockchain technologies.
               </p>
             </div>
             
@@ -44,15 +44,15 @@ const About = () => {
             <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="w-40 h-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200 shadow-xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80" 
+                  src="https://avatars.githubusercontent.com/u/148786427?s=400&u=794e7f3fe9c184c5fbb45f64d548f7d55175a5ea&v=4" 
                   alt="CTO" 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h3 className="text-xl font-bold">Sarah Johnson</h3>
-              <p className="text-blue-600 mb-2">CTO</p>
+              <h3 className="text-xl font-bold">SAMAR SEN BEHERA</h3>
+              <p className="text-blue-600 mb-2">UI/UX Designer</p>
               <p className="text-gray-600">
-                Security specialist focusing on encryption and privacy technologies.
+                Experienced DevOps specialist focused on streamlining development workflows and infrastructure automation.
               </p>
             </div>
             
@@ -60,15 +60,15 @@ const About = () => {
             <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="w-40 h-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200 shadow-xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80" 
+                  src="https://avatars.githubusercontent.com/u/183403536?v=4" 
                   alt="Lead Developer" 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h3 className="text-xl font-bold">Michael Rodriguez</h3>
-              <p className="text-blue-600 mb-2">Lead Developer</p>
+              <h3 className="text-xl font-bold">SOUMIK ROUTRAY</h3>
+              <p className="text-blue-600 mb-2">Frontend Devloper</p>
               <p className="text-gray-600">
-                Cloud infrastructure expert who architected our scalable platform.
+                Skilled frontend developer focused on creating seamless and interactive user interfaces.
               </p>
             </div>
 
@@ -76,15 +76,15 @@ const About = () => {
             <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="w-40 h-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200 shadow-xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80" 
+                  src="https://avatars.githubusercontent.com/u/148786427?s=400&u=794e7f3fe9c184c5fbb45f64d548f7d55175a5ea&v=4" 
                   alt="Product Manager" 
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h3 className="text-xl font-bold">Emma Davis</h3>
-              <p className="text-blue-600 mb-2">Product Manager</p>
+              <h3 className="text-xl font-bold">ADITYA PRASAD SAHU</h3>
+              <p className="text-blue-600 mb-2">Cybersecurity specialist</p>
               <p className="text-gray-600">
-                Experienced product manager with a passion for delivering user-centric solutions.
+                Experienced in cybersecurity, focused on protecting digital assets through advanced security practices.
               </p>
             </div>
           </div>
