@@ -1,5 +1,5 @@
 
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload } from "lucide-react";
@@ -12,6 +12,7 @@ interface FileUploadProps {
 const FileUpload = ({ onFileSelect, isLoading = false }: FileUploadProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -44,8 +45,12 @@ const FileUpload = ({ onFileSelect, isLoading = false }: FileUploadProps) => {
     }
   };
 
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
-    <Card className={`border-2 border-dashed ${dragActive ? "border-blue-600 bg-blue-50" : "border-gray-300"}`}>
+    <Card className={`border-2 border-dashed ${dragActive ? "border-blue-600 bg-blue-50 dark:bg-blue-900/20" : "border-gray-300"}`}>
       <CardContent className="p-6">
         <div
           className="flex flex-col items-center justify-center space-y-4 py-8"
@@ -64,16 +69,16 @@ const FileUpload = ({ onFileSelect, isLoading = false }: FileUploadProps) => {
             id="file-upload"
             className="hidden"
             onChange={handleFileChange}
+            ref={fileInputRef}
           />
-          <label htmlFor="file-upload">
-            <Button 
-              variant="outline" 
-              className="cursor-pointer"
-              disabled={isLoading}
-            >
-              Select File
-            </Button>
-          </label>
+          <Button 
+            variant="outline" 
+            className="cursor-pointer"
+            disabled={isLoading}
+            onClick={handleButtonClick}
+          >
+            Select File
+          </Button>
           {selectedFile && (
             <div className="text-sm text-gray-600 mt-2">
               Selected: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)

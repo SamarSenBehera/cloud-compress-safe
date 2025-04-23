@@ -1,8 +1,16 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, ChevronDown } from "lucide-react";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import Logo from "./Logo";
 
 interface NavbarProps {
@@ -13,8 +21,23 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
   const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const userIsLoggedIn = propIsLoggedIn !== undefined ? propIsLoggedIn : isLoggedIn;
+
+  // Get the current user ID
+  useState(() => {
+    const getCurrentUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setUserId(data.user.id);
+      }
+    };
+    
+    if (userIsLoggedIn) {
+      getCurrentUser();
+    }
+  });
 
   const handleLogout = () => {
     logout();
@@ -22,7 +45,7 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
   };
 
   return (
-    <nav className="navbar-blur sticky top-0 z-30">
+    <nav className="navbar-blur sticky top-0 z-30 bg-background/80 backdrop-blur-sm">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2 animate-float">
           <Logo size="md" />
@@ -42,9 +65,26 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
               <Link to="/dashboard" className="text-foreground hover:text-primary transition-colors duration-200 font-medium">
                 Dashboard
               </Link>
-              <Button variant="outline" className="font-medium border-primary/40 text-primary hover:bg-primary/10 hover:text-white transition-all" onClick={handleLogout}>
-                Logout
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex items-center gap-2 font-medium border-primary/40 text-primary hover:bg-primary/10 hover:text-white transition-all">
+                    <User size={16} />
+                    {userId ? userId.substring(0, 8) + '...' : 'Account'}
+                    <ChevronDown size={16} />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem onSelect={() => navigate('/dashboard')}>
+                    My Files
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => navigate('/account')}>
+                    Account Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={handleLogout}>
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           ) : (
             <>
@@ -55,7 +95,7 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
               </Link>
               <Link to="/register">
                 <Button className="bg-primary hover:bg-primary/80 text-white font-medium shadow-lg shadow-primary/40 card-hover">
-                  Sign up
+                  Create Your Account
                 </Button>
               </Link>
             </>
@@ -103,6 +143,11 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
                 >
                   Dashboard
                 </Link>
+                {userId && (
+                  <div className="text-sm text-foreground/70 py-2 border-t border-primary/10">
+                    User ID: {userId.substring(0, 8)}...
+                  </div>
+                )}
                 <Button variant="outline" className="font-medium border-primary/40 text-primary hover:bg-primary/10 hover:text-white" onClick={handleLogout}>
                   Logout
                 </Button>
@@ -116,7 +161,7 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
                 </Link>
                 <Link to="/register" onClick={() => setIsMenuOpen(false)}>
                   <Button className="w-full bg-primary hover:bg-primary/80 text-white font-medium shadow-lg shadow-primary/40">
-                    Sign up
+                    Create Your Account
                   </Button>
                 </Link>
               </>

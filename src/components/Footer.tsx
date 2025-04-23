@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Logo from './Logo';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <footer className="bg-background border-t border-border py-8">
       <div className="container mx-auto px-4">
@@ -31,6 +33,11 @@ const Footer = () => {
                   About
                 </Link>
               </li>
+              <li>
+                <Link to="/dashboard" className="text-muted-foreground hover:text-primary transition-colors duration-200">
+                  Dashboard
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
@@ -46,11 +53,16 @@ const Footer = () => {
                   Privacy Policy
                 </Link>
               </li>
+              <li>
+                <Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors duration-200">
+                  Contact Us
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
         <div className="border-t border-border mt-8 pt-6 text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} SecureZip. All rights reserved.</p>
+          <p>&copy; {currentYear} SecureZip. All rights reserved.</p>
         </div>
       </div>
     </footer>
