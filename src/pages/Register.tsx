@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { signUp } = useAuth();
 
   // Handle registration using our AuthContext
   const handleRegister = async (values: Record<string, string>) => {
@@ -17,7 +17,7 @@ const Register = () => {
     
     try {
       // Call our register function from context
-      await register(values.name, values.email, values.password);
+      await signUp(values.email, values.password);
       console.log("Registered successfully");
       navigate("/dashboard");
     } catch (error) {

@@ -18,7 +18,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, signOut } = useAuth();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
@@ -40,7 +40,7 @@ const Navbar = ({ isLoggedIn: propIsLoggedIn }: NavbarProps) => {
   });
 
   const handleLogout = () => {
-    logout();
+    signOut();
     navigate("/");
   };
 

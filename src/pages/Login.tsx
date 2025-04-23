@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { signIn } = useAuth();
 
   // Handle login using our AuthContext
   const handleLogin = async (values: Record<string, string>) => {
@@ -17,7 +17,7 @@ const Login = () => {
     
     try {
       // Call our login function from context
-      await login(values.email, values.password);
+      await signIn(values.email, values.password);
       console.log("Logged in successfully");
       navigate("/dashboard");
     } catch (error) {
