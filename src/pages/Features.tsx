@@ -30,7 +30,7 @@ const Features = () => {
                 <div className="w-12 h-12 bg-blue-100 rounded-lg text-blue-600 flex items-center justify-center mr-4">
                   <FileType className="w-6 h-6" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">Lossless Compression</h2>
+                <h2 className="text-2xl font-bold text-white-900">Lossless Compression</h2>
               </div>
               <p className="text-gray-600 mb-6">
                 Our advanced compression algorithms reduce file sizes while maintaining 100% 
@@ -58,7 +58,7 @@ const Features = () => {
                 <div className="w-12 h-12 bg-blue-100 rounded-lg text-blue-600 flex items-center justify-center mr-4">
                   <Shield className="w-6 h-6" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">Military-Grade Security</h2>
+                <h2 className="text-2xl font-bold text-white-900">Military-Grade Security</h2>
               </div>
               <p className="text-gray-600 mb-6">
                 Your files are protected with advanced encryption and security protocols,
@@ -86,7 +86,7 @@ const Features = () => {
                 <div className="w-12 h-12 bg-blue-100 rounded-lg text-blue-600 flex items-center justify-center mr-4">
                   <Zap className="w-6 h-6" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">Fast Processing</h2>
+                <h2 className="text-2xl font-bold text-white-900">Fast Processing</h2>
               </div>
               <p className="text-gray-600 mb-6">
                 Experience rapid compression and decompression with our high-performance 
@@ -114,7 +114,7 @@ const Features = () => {
                 <div className="w-12 h-12 bg-blue-100 rounded-lg text-blue-600 flex items-center justify-center mr-4">
                   <Server className="w-6 h-6" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">Cloud Storage</h2>
+                <h2 className="text-2xl font-bold text-white-900">Cloud Storage</h2>
               </div>
               <p className="text-gray-600 mb-6">
                 Store your compressed files securely in the cloud, accessible from anywhere
