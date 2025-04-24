@@ -9,7 +9,7 @@ const About = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="bg-violet-400 text-white py-16">
+      <section className="bg-violet-600 text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">About SecureZip</h1>
           <p className="text-xl max-w-2xl mx-auto opacity-90">
@@ -76,7 +76,7 @@ const About = () => {
             <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="w-40 h-40 rounded-full mx-auto mb-4 overflow-hidden bg-gray-200 shadow-xl">
                 <img 
-                  src="https:https://avatars.githubusercontent.com/u/208837719?v=4" 
+                  src="https://avatars.githubusercontent.com/u/208837719?v=4" 
                   alt="Product Manager" 
                   className="w-full h-full object-cover"
                 />
@@ -92,7 +92,7 @@ const About = () => {
       </section>
       
       {/* CTA Section */}
-      <section className="py-16 bg-blue-600 text-white">
+      <section className="py-16 bg-violet-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Start Using SecureZip Today</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
