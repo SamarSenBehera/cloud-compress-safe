@@ -36,7 +36,7 @@ const Login = () => {
       <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-extrabold text-gray-900">Sign in to your account</h1>
+            <h1 className="text-3xl font-extrabold text-white-900">Sign in to your account</h1>
             <p className="mt-2 text-gray-600">
               Access your compressed files and storage
             </p>
